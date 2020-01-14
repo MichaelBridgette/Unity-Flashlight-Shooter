@@ -184,8 +184,6 @@ public class Shooting : MonoBehaviour {
             UseShotgun();
         }
 
-        Debug.Log(new Quaternion(firePoint.rotation.x, firePoint.rotation.y, firePoint.rotation.z, firePoint.rotation.w));
-
     }
     void CheckForEmptyMagazine()
     {
