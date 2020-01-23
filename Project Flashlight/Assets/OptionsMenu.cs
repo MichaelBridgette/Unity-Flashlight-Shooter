@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class MainMenu : MonoBehaviour
+public class OptionsMenu : MonoBehaviour
 {
     public Button btn;
 
@@ -22,13 +21,4 @@ public class MainMenu : MonoBehaviour
         es.SetSelectedGameObject(null);
         btn.Select();
     }
-
-    public void PlayGame()
-   {
-        SceneManager.LoadScene("Game");
-   }
-   public void Quit()
-   {
-       Application.Quit();
-   }
 }

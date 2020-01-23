@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 
 public class Gun
@@ -23,10 +24,15 @@ public class Gun
 
 public class Shooting : MonoBehaviour {
 
+    PlayerControls controls;
+
 
     Gun rifle = new Gun();
     Gun handGun = new Gun();
     Gun shotGun = new Gun();
+
+    int amountOfGuns = 3;
+
 
     Gun gun = new Gun();
 
@@ -59,6 +65,58 @@ public class Shooting : MonoBehaviour {
     public AudioClip rifleClip;
     public AudioClip handgunClip;
     public AudioClip shotgunClip;
+
+
+    bool fireGun = false;
+
+    int switchValue = 1;
+
+    public void Awake()
+    {
+        controls = new PlayerControls();
+        controls.Gameplay.Shoot.performed += ctx => fireGun = true;
+        controls.Gameplay.Shoot.canceled += ctx => fireGun = false;
+
+        controls.Gameplay.ChangeGun.performed += ctx => SwitchGun();
+    }
+    private void OnEnable()
+    {
+        controls.Gameplay.Enable();
+    }
+    private void OnDisable()
+    {
+        controls.Gameplay.Disable();
+    }
+    private void StopShootingAnimation()
+    {
+        if (isShooting == true)
+        {
+            isShooting = false;
+            animator.SetBool("IsShooting", isShooting);
+        }
+    }
+    private void SwitchGun()
+    {
+        switchValue++;
+        if(switchValue > amountOfGuns)
+        {
+            switchValue = 1;
+        }
+
+
+        if(switchValue == 1)
+        {
+            UseRifle();
+        }
+        else if(switchValue == 2)
+        {
+            UseHandgun();
+        }
+        else if(switchValue == 3)
+        {
+            UseShotgun();
+        }
+    }
 
     public void Start()
     {
@@ -102,6 +160,7 @@ public class Shooting : MonoBehaviour {
         //UseHandgun();
         UseRifle();
 
+
         gunSource = GetComponent<AudioSource>();
     }
 
@@ -110,13 +169,14 @@ public class Shooting : MonoBehaviour {
     void Update() {
 
         text.text = "Ammo: " + gun.mag + "/" + gun.reserveAmmo;
+        //nextFire = gun.shootRate + Time.time;
 
         if (gun.mag <= 0)
         {
             Reload();
         }
 
-        if (Input.GetKey(KeyCode.Space) && gun.mag > 0 && isMelee == false)
+        if (fireGun && gun.mag > 0 && isMelee == false)
         {
             if (isShooting == false)
             {
@@ -126,7 +186,7 @@ public class Shooting : MonoBehaviour {
             if (Time.time > nextFire)
             {
                 gunSource.Play();
-                if(gun.gunName != "shotgun")
+                if (gun.gunName != "shotgun")
                 {
                     FireProjectile();
                 }
@@ -134,12 +194,12 @@ public class Shooting : MonoBehaviour {
                 {
                     FireShell();
                 }
-                
+
                 nextFire = gun.shootRate + Time.time;
                 gun.mag -= 1;
             }
         }
-        else if (!Input.GetKey(KeyCode.Space))
+        else if (!fireGun)
         {
             if (isShooting == true)
             {
