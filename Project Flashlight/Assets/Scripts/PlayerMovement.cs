@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour {
     float playerAngle = 90f;
     public float stickThreshold = 0.65f;
 
+    public Rigidbody2D rigidbody;
+
 
     private void Awake()
     {
@@ -56,7 +58,8 @@ public class PlayerMovement : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.angularVelocity = 0f;
 
         Vector2 m = new Vector2(move.x, move.y) * Time.deltaTime * moveSpeed;
         transform.Translate(m,Space.World);

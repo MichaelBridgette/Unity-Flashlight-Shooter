@@ -19,8 +19,8 @@ TagManager:
   - AmbientLight
   - Bullet
   - Boundaries
-  - 
-  - 
+  - Enemy
+  - Collidable
   - 
   - 
   - 

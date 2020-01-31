@@ -10,6 +10,11 @@ public class Bullet : MonoBehaviour {
     {
         GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
         Destroy(effect, 1.0f);
-        Destroy(gameObject);   
+        Destroy(gameObject);
+        //check for enemy layer
+        if(collision.gameObject.layer == 13)
+        {
+            Destroy(collision.gameObject);
+        }
     }
 }
